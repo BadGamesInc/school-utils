@@ -1,3 +1,7 @@
+// ORIGINAL FILE TAKEN FROM https://www.assessmenttechnology.com/GalileoASP/ASPX/StudentCenter/TakeTest/TakeTestJS.js?v=06112021
+// I DID NOT MAKE THE ORIGINAL FILE I JUST MODIFIED PLEASE DON'T SUE
+
+
 var isMobile = false;
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     isMobile = true;
