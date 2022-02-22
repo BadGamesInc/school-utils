@@ -1,4 +1,4 @@
-// ORIGINAL FILE TAKEN FROM https://www.assessmenttechnology.com/GalileoASP/ASPX/StudentCenter/TakeTest/TakeTestJS.js?v=06112021
+e// ORIGINAL FILE TAKEN FROM https://www.assessmenttechnology.com/GalileoASP/ASPX/StudentCenter/TakeTest/TakeTestJS.js?v=06112021
 // I DID NOT MAKE THE ORIGINAL FILE I JUST MODIFIED PLEASE DON'T SUE
 
 
@@ -1027,31 +1027,34 @@ function SetTimer(timeElapsed) {
         // Show updated time
         ShowTime();
 
-        // If the timer hits it's max limit (meaning time is up for the test)
-        if (parseInt(timeElapsed) >= parseInt($("#hdnTotalTestTimeInMinutes").val()) * 60) {
-            // Pause the test (Status = 0)
-            $("#hdnTimerStudentStatus").val(ENUMS_TEST_TIMER_STATUS_STUDENT_PAUSE);
+        // If the timer hits it's max limit (meaning time is up for the
+        
+        // Remove test locking if time is up
+        
+//         if (parseInt(timeElapsed) >= parseInt($("#hdnTotalTestTimeInMinutes").val()) * 60) {
+//             // Pause the test (Status = 0)
+//             $("#hdnTimerStudentStatus").val(ENUMS_TEST_TIMER_STATUS_STUDENT_PAUSE);
 
-            // Lock the test (TestLocked = 1)
-            $("#hdnIsTestTimeUp").val(TEST_TIMER_UP_TRUE);
+//             // Lock the 
+//             // $("#hdnIsTestTimeUp").val(TEST_TIMER_UP_TRUE);
 
-            // Update the test timer and test log
-            UpdateTestTimer(g_testTimerID,
-                            timeElapsed,
-                            ENUMS_TEST_TIMER_STATUS_STUDENT_PAUSE,
-                            TEST_TIMER_UP_TRUE);
+//             // Update the test timer and test log
+//             UpdateTestTimer(g_testTimerID,
+//                             timeElapsed,
+//                             ENUMS_TEST_TIMER_STATUS_STUDENT_PAUSE,
+//                             TEST_TIMER_UP_TRUE);
 
-            var header = '<hr/>Test time is up.';
-            var msg = '<b>You will be redirected to the student center...</b>';
-            var postUrl = '/GalileoASP/ASPX/StudentCenter/StudentCenterRedirectFromGalileo.aspx';
+//             var header = '<hr/>Test time is up.';
+//             var msg = '<b>You will be redirected to the student center...</b>';
+//             var postUrl = '/GalileoASP/ASPX/StudentCenter/StudentCenterRedirectFromGalileo.aspx';
 
-            // Call the validate method to handle routing
-            ShowAlertAndRedirect(header, msg, postUrl);
-        }
+//             // Call the validate method to handle routing
+//             ShowAlertAndRedirect(header, msg, postUrl);
+//         }
             // Update the time every 60 seconds under 2 conditions - 
             // Case 1 - Only when the test is in "Play Mode" (Status = 1)
             // Case 2 - Only when the test is not locked (TestLocked = 0)
-        else if (parseInt(timeElapsed) % g_saveInterval == 0 &&
+        if (parseInt(timeElapsed) % g_saveInterval == 0 &&
                  parseInt($("#hdnTimerStudentStatus").val()) == ENUMS_TEST_TIMER_STATUS_STUDENT_PLAY &&
                  ((parseInt($("#hdnTimerTeacherStatus").val()) == ENUMS_TEST_TIMER_STATUS_TEACHER_NONE) ||
                  (parseInt($("#hdnTimerTeacherStatus").val()) == ENUMS_TEST_TIMER_STATUS_TEACHER_PLAY)) &&
@@ -1063,16 +1066,17 @@ function SetTimer(timeElapsed) {
                 $('#lblTestTimer').css({ 'color': 'red' });
             }
         }
-            // Case : The test is PAUSED_BY_TEACHER
-        else if (parseInt($("#hdnTimerTeacherStatus").val()) == ENUMS_TEST_TIMER_STATUS_TEACHER_PAUSE) {
-            // Show an alert to the students informing them that test is paused by the teacher
-            var header = '<hr/>Test paused by your teacher.';
-            var msg = '<b>You will be redirected to the Student Center...</b>';
-            var postUrl = '/GalileoASP/ASPX/StudentCenter/StudentCenterRedirectFromGalileo.aspx';
+           // Remove teacher being able to pause test
+        
+//         else if (parseInt($("#hdnTimerTeacherStatus").val()) == ENUMS_TEST_TIMER_STATUS_TEACHER_PAUSE) {
+//             // Show an alert to the students informing them that test is paused by the teacher
+//             var header = '<hr/>Test paused by your teacher.';
+//             var msg = '<b>You will be redirected to the Student Center...</b>';
+//             var postUrl = '/GalileoASP/ASPX/StudentCenter/StudentCenterRedirectFromGalileo.aspx';
 
-            // Call the validate method to handle routing
-            ShowAlertAndRedirect(header, msg, postUrl);
-        }
+//             // Call the validate method to handle routing
+//             ShowAlertAndRedirect(header, msg, postUrl);
+//         }
     },
     g_interval);
 }
@@ -1087,45 +1091,46 @@ $(document).ready(function () {
     var isTimedTest = $('#hdnShowTestTimer').val();
 
     if (isTimedTest == 1) {
-        if (parseInt($("#hdnIsTestTimeUp").val()) == TEST_TIMER_UP_FALSE) // Check whether the test is locked
-        {
-            if ((parseInt($("#hdnTimerStudentStatus").val()) == ENUMS_TEST_TIMER_STATUS_STUDENT_PLAY) &&
-                ((parseInt($("#hdnTimerTeacherStatus").val()) == ENUMS_TEST_TIMER_STATUS_TEACHER_NONE) ||
-                (parseInt($("#hdnTimerTeacherStatus").val()) == ENUMS_TEST_TIMER_STATUS_TEACHER_PLAY))) {
-                SetTimer($("#hdnTestTimeElapsed").val());
+        // Remove test locking
+//         if (parseInt($("#hdnIsTestTimeUp").val()) == TEST_TIMER_UP_FALSE) // Check whether the test is locked
+//         {
+//             if ((parseInt($("#hdnTimerStudentStatus").val()) == ENUMS_TEST_TIMER_STATUS_STUDENT_PLAY) &&
+//                 ((parseInt($("#hdnTimerTeacherStatus").val()) == ENUMS_TEST_TIMER_STATUS_TEACHER_NONE) ||
+//                 (parseInt($("#hdnTimerTeacherStatus").val()) == ENUMS_TEST_TIMER_STATUS_TEACHER_PLAY))) {
+//                 SetTimer($("#hdnTestTimeElapsed").val());
 
-                UpdateTestTimer(g_testTimerID,
-                                parseInt($("#hdnTestTimeElapsed").val()),
-                                ENUMS_TEST_TIMER_STATUS_STUDENT_PLAY,
-                                TEST_TIMER_UP_FALSE);
-            }
-            else {
-                //This means that the test is paused by the teacher. In this case, we want
-                // to show them a alert that test is paused by teacher and send them back to the
-                // student center.
-                // Show an alert to the students informing them that test is paused by the teacher
-                var header = '<hr/>Test paused by your teacher.';
-                var msg = '<b>You will be redirected back to the Student Center...</b>';
-                var postUrl = '/GalileoASP/ASPX/StudentCenter/StudentCenterRedirectFromGalileo.aspx';
+//                 UpdateTestTimer(g_testTimerID,
+//                                 parseInt($("#hdnTestTimeElapsed").val()),
+//                                 ENUMS_TEST_TIMER_STATUS_STUDENT_PLAY,
+//                                 TEST_TIMER_UP_FALSE);
+//             }
+//             else {
+//                 //This means that the test is paused by the teacher. In this case, we want
+//                 // to show them a alert that test is paused by teacher and send them back to the
+//                 // student center.
+//                 // Show an alert to the students informing them that test is paused by the teacher
+//                 var header = '<hr/>Test paused by your teacher.';
+//                 var msg = '<b>You will be redirected back to the Student Center...</b>';
+//                 var postUrl = '/GalileoASP/ASPX/StudentCenter/StudentCenterRedirectFromGalileo.aspx';
 
-                // Call the validate method to handle routing
-                ShowAlertAndRedirect(header, msg, postUrl);
-            }
-        }
-        else {
-            //If the test is locked (meaning the time is up); we probably dont even want to allow them
-            // into this test. Somehow, they make it here; then we want to show them a message and send them
-            // back to the student center.
+//                 // Call the validate method to handle routing
+//                 ShowAlertAndRedirect(header, msg, postUrl);
+//             }
+//         }
+//         else {
+//             //If the test is locked (meaning the time is up); we probably dont even want to allow them
+//             // into this test. Somehow, they make it here; then we want to show them a message and send them
+//             // back to the student center.
 
-            // Case when the test time is up. We will probably want to
-            // redirect to the student center.
-            var header = '<hr/>Test time is up.';
-            var msg = '<b>You will be redirected to the Student Center...</b>';
-            var postUrl = '/GalileoASP/ASPX/StudentCenter/StudentCenterRedirectFromGalileo.aspx';
+//             // Case when the test time is up. We will probably want to
+//             // redirect to the student center.
+//             var header = '<hr/>Test time is up.';
+//             var msg = '<b>You will be redirected to the Student Center...</b>';
+//             var postUrl = '/GalileoASP/ASPX/StudentCenter/StudentCenterRedirectFromGalileo.aspx';
 
-            // Call the validate method to handle routing
-            ShowAlertAndRedirect(header, msg, postUrl);
-        }
+//             // Call the validate method to handle routing
+//             ShowAlertAndRedirect(header, msg, postUrl);
+//         }
 
         // Show timer
         ShowTime();
@@ -1247,6 +1252,7 @@ function UpdateTestTimer(timerID,
             // polling is removed it just help us right now.
         },
         error: function (jqXHR, textStatus, errorThrown) {
+            // ???? galileo devs on crack?
             // eat this error..
         }
     });
@@ -1417,7 +1423,7 @@ function ThesaurusButtonClicked() {
         type: "POST",
         url: '/GalileoASP/TakeTestServices/GetThesaurusWordItem',
         data:
-             JSON.stringify({
+             JSON.stringify(9{
                  testID: $("#hdnTestID").val(),
                  word: searchWord,
                  childID: $('#hdnChildID').val()
